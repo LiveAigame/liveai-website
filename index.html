@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LiveAiのホームページ</title>
+  <style>
+    /* 全体リセット & フォント設定 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background-color: #ffffff;
+      color: #111111;
+      line-height: 1.8;
+    }
+
+    /* ヘッダー */
+    header {
+      width: 100%;
+      background: #ffffff;
+      border-bottom: 1px solid #f0f0f0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .header-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .site-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #111111;
+      text-decoration: none;
+      line-height: 1.2;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: #333333;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover {
+      opacity: 0.6;
+    }
+
+    /* メインコンテナ */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ヒーローセクション（トップの中央文字と黒ボタン） */
+    .hero {
+      min-height: calc(85vh - 70px);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4rem 1rem;
+    }
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.2rem;
+      color: #000000;
+    }
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: #666666;
+      margin-bottom: 2.5rem;
+      font-weight: 400;
+    }
+    .btn-black {
+      display: inline-block;
+      background-color: #000000;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 0.9rem 2.4rem;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      transition: background-color 0.2s, transform 0.1s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-black:hover {
+      background-color: #2b2b2b;
+    }
+    .btn-black:active {
+      transform: scale(0.98);
+    }
+
+    /* 各セクション */
+    section {
+      padding: 5rem 0;
+      border-top: 1px solid #f2f2f2;
+    }
+    .section-title {
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+
+    /* このサイトについて (About) */
+    .about-text {
+      color: #444444;
+      font-size: 1.05rem;
+      max-width: 700px;
+    }
+    .about-text p {
+      margin-bottom: 1.2rem;
+    }
+
+    /* ゲームセクション */
+    .game-card {
+      background: #fafafa;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 1.5rem;
+    }
+    .game-header {
+      padding: 1.2rem 1.5rem;
+      border-bottom: 1px solid #eaeaea;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+    }
+    .game-header h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .game-canvas-area {
+      background: #0f172a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      max-width: 800px;
+      aspect-ratio: 16 / 9;
+    }
+    .game-control-bar {
+      padding: 1rem 1.5rem;
+      background: #ffffff;
+      border-top: 1px solid #eaeaea;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: #666666;
+    }
+
+    /* リンク集 (Links) */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.5rem;
+    }
+    .link-item {
+      display: block;
+      padding: 1.5rem;
+      background: #fafafa;
+      border: 1px solid #e5e5e5;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #111111;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+    .link-item:hover {
+      border-color: #000000;
+      background-color: #ffffff;
+    }
+    .link-name {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+    }
+    .link-desc {
+      font-size: 0.85rem;
+      color: #666666;
+    }
+
+    /* フッター */
+    footer {
+      border-top: 1px solid #f2f2f2;
+      padding: 3rem 0;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #888888;
+    }
+
+    /* スマホ対応 */
+    @media (max-width: 768px) {
+      .header-inner {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      .nav-links {
+        gap: 1.2rem;
+        font-size: 0.9rem;
+      }
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      .game-control-bar {
+        flex-direction: column;
+        gap: 0.8rem;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header>
+    <div class="header-inner">
+      <a href="#" class="site-title">LiveAiのホームページ</a>
+      <ul class="nav-links">
+        <li><a href="#about">このサイトについて</a></li>
+        <li><a href="#game">ゲーム</a></li>
+        <li><a href="#links">リンク</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- トップ画面（画像中央部分の再現） -->
+    <div class="hero">
+      <h1 class="hero-title">LiveAi</h1>
+      <p class="hero-subtitle">ゲーム制作やAI創作についていろいろ作っています</p>
+      <a href="#game" class="btn-black">ゲームを遊ぶ</a>
+    </div>
+
+    <!-- 1. このサイトについて -->
+    <section id="about">
+      <h2 class="section-title">このサイトについて</h2>
+      <div class="about-text">
+        <p>LiveAiの個人制作ポータルサイトです。</p>
+        <p>ブラウザですぐに遊べる軽量なミニゲームの公開や、RPGツクールMZを用いたゲーム開発の進捗、AI技術を活用した制作物などを発信しています。</p>
+      </div>
+    </section>
+
+    <!-- 2. ゲーム -->
+    <section id="game">
+      <h2 class="section-title">ゲーム</h2>
+      <p style="color: #666; margin-bottom: 1rem;">ブラウザ上でそのまま遊べるシンプルなサバイバルアクションです。</p>
+      
+      <div class="game-card">
+        <div class="game-header">
+          <h3>MINIMAL SURVIVOR</h3>
+          <span style="font-size: 0.85rem; color: #666;">Ver 1.0</span>
+        </div>
+        <div class="game-canvas-area">
+          <canvas id="gameCanvas" width="800" height="450"></canvas>
+        </div>
+        <div class="game-control-bar">
+          <div>操作: マウス移動または画面スワイプで自機を操作</div>
+          <button class="btn-black" id="restartBtn" style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">スタート / やり直す</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. リンク -->
+    <section id="links">
+      <h2 class="section-title">リンク</h2>
+      <p style="color: #666;">外部アカウントや関連ページの一覧です。</p>
+
+      <div class="links-grid">
+        <a href="https://twitter.com" target="_blank" rel="noopener" class="link-item">
+          <div class="link-name">X (旧Twitter)</div>
+          <div class="link-desc">日々の制作進捗や開発のつぶやき</div>
+        </a>
+        <a href="https://youtube.com" target="_blank" rel="noopener" class="link-item">
+          <div class="link-name">YouTube</div>
+          <div class="link-desc">プレイ動画やプロモーション動画</div>
+        </a>
+        <a href="https://patreon.com" target="_blank" rel="noopener" class="link-item">
+          <div class="link-name">Patreon</div>
+          <div class="link-desc">限定コンテンツや支援者向けページ</div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- フッター -->
+  <footer>
+    <p>&copy; 2026 LiveAi. All Rights Reserved.</p>
+  </footer>
+
+  <!-- ゲームプログラム -->
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    let animationId;
+    let isPlaying = false;
+    let score = 0;
+
+    const player = { x: 400, y: 225, radius: 10, speed: 5 };
+    let enemies = [];
+    let bullets = [];
+    let targetPos = { x: 400, y: 225 };
+    let lastSpawn = 0;
+    let lastShot = 0;
+
+    function initGame() {
+      player.x = 400; player.y = 225;
+      targetPos.x = 400; targetPos.y = 225;
+      enemies = [];
+      bullets = [];
+      score = 0;
+      isPlaying = true;
+      lastSpawn = Date.now();
+      lastShot = Date.now();
+    }
+
+    function gameLoop() {
+      if (!isPlaying) return;
+
+      const dx = targetPos.x - player.x;
+      const dy = targetPos.y - player.y;
+      player.x += dx * 0.1;
+      player.y += dy * 0.1;
+
+      if (Date.now() - lastShot > 250) {
+        if (enemies.length > 0) {
+          const target = enemies[0];
+          const angle = Math.atan2(target.y - player.y, target.x - player.x);
+          bullets.push({ x: player.x, y: player.y, vx: Math.cos(angle) * 9, vy: Math.sin(angle) * 9 });
+        }
+        lastShot = Date.now();
+      }
+
+      if (Date.now() - lastSpawn > 650) {
+        const side = Math.floor(Math.random() * 4);
+        let ex, ey;
+        if (side === 0) { ex = Math.random() * 800; ey = -20; }
+        else if (side === 1) { ex = 820; ey = Math.random() * 450; }
+        else if (side === 2) { ex = Math.random() * 800; ey = 470; }
+        else { ex = -20; ey = Math.random() * 450; }
+        enemies.push({ x: ex, y: ey, radius: 10, speed: 2.2 });
+        lastSpawn = Date.now();
+      }
+
+      for (let i = bullets.length - 1; i >= 0; i--) {
+        const b = bullets[i];
+        b.x += b.vx; b.y += b.vy;
+        if (b.x < 0 || b.x > 800 || b.y < 0 || b.y > 450) bullets.splice(i, 1);
+      }
+
+      for (let i = enemies.length - 1; i >= 0; i--) {
+        const e = enemies[i];
+        const angle = Math.atan2(player.y - e.y, player.x - e.x);
+        e.x += Math.cos(angle) * e.speed;
+        e.y += Math.sin(angle) * e.speed;
+
+        if (Math.hypot(player.x - e.x, player.y - e.y) < player.radius + e.radius) {
+          gameOver();
+          return;
+        }
+
+        for (let j = bullets.length - 1; j >= 0; j--) {
+          const b = bullets[j];
+          if (Math.hypot(e.x - b.x, e.y - b.y) < e.radius + 4) {
+            enemies.splice(i, 1);
+            bullets.splice(j, 1);
+            score += 10;
+            break;
+          }
+        }
+      }
+
+      // 描画処理
+      ctx.fillStyle = "#0f172a";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#38bdf8";
+      bullets.forEach(b => {
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.fillStyle = "#ffffff";
+      ctx.beginPath();
+      ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#f43f5e";
+      enemies.forEach(e => {
+        ctx.beginPath();
+        ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "600 16px sans-serif";
+      ctx.fillText(`SCORE: ${score}`, 24, 32);
+
+      animationId = requestAnimationFrame(gameLoop);
+    }
+
+    function gameOver() {
+      isPlaying = false;
+      cancelAnimationFrame(animationId);
+      ctx.fillStyle = "rgba(15, 23, 42, 0.85)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "bold 22px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("GAME OVER", 400, 215);
+      ctx.font = "15px sans-serif";
+      ctx.fillText(`SCORE: ${score}`, 400, 245);
+      ctx.textAlign = "start";
+    }
+
+    function updatePos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      targetPos.x = (clientX - rect.left) * scaleX;
+      targetPos.y = (clientY - rect.top) * scaleY;
+    }
+
+    canvas.addEventListener("mousemove", updatePos);
+    canvas.addEventListener("touchmove", (e) => { updatePos(e); e.preventDefault(); }, { passive: false });
+
+    document.getElementById("restartBtn").addEventListener("click", () => {
+      cancelAnimationFrame(animationId);
+      initGame();
+      gameLoop();
+    });
+
+    // 初期待機画面
+    ctx.fillStyle = "#0f172a";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#94a3b8";
+    ctx.font = "16px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("「スタート」ボタンを押して開始", 400, 225);
+    ctx.textAlign = "start";
+  </script>
+</body>
+</html>
