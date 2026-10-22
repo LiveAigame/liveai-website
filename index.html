@@ -69,61 +69,20 @@
       padding: 0 1.5rem;
     }
 
-    /* ヒーローセクション（トップの中央文字と黒ボタン） */
-    .hero {
-      min-height: calc(85vh - 70px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 4rem 1rem;
-    }
-    .hero-title {
-      font-size: 3.5rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.2rem;
-      color: #000000;
-    }
-    .hero-subtitle {
-      font-size: 1.15rem;
-      color: #666666;
-      margin-bottom: 2.5rem;
-      font-weight: 400;
-    }
-    .btn-black {
-      display: inline-block;
-      background-color: #000000;
-      color: #ffffff;
-      text-decoration: none;
-      padding: 0.9rem 2.4rem;
-      border-radius: 4px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      transition: background-color 0.2s, transform 0.1s;
-      border: none;
-      cursor: pointer;
-    }
-    .btn-black:hover {
-      background-color: #2b2b2b;
-    }
-    .btn-black:active {
-      transform: scale(0.98);
-    }
-
     /* 各セクション */
     section {
-      padding: 5rem 0;
+      padding: 4.5rem 0;
       border-top: 1px solid #f2f2f2;
+    }
+    section:first-of-type {
+      border-top: none;
+      padding-top: 3.5rem;
     }
     .section-title {
       font-size: 1.7rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      margin-bottom: 2rem;
-      position: relative;
+      margin-bottom: 1.5rem;
     }
 
     /* このサイトについて (About) */
@@ -136,47 +95,78 @@
       margin-bottom: 1.2rem;
     }
 
-    /* ゲームセクション */
+    /* ゲーム一覧カード */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
     .game-card {
       background: #fafafa;
       border: 1px solid #e5e5e5;
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
-      margin-top: 1.5rem;
-    }
-    .game-header {
-      padding: 1.2rem 1.5rem;
-      border-bottom: 1px solid #eaeaea;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+    }
+    .game-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+      border-color: #111111;
       background: #ffffff;
     }
-    .game-header h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
-    .game-canvas-area {
+    .game-banner {
+      height: 150px;
       background: #0f172a;
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
     }
-    canvas {
-      display: block;
-      width: 100%;
-      max-width: 800px;
-      aspect-ratio: 16 / 9;
+    .game-icon {
+      font-size: 3rem;
     }
-    .game-control-bar {
-      padding: 1rem 1.5rem;
-      background: #ffffff;
-      border-top: 1px solid #eaeaea;
+    .game-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .game-content {
+      padding: 1.5rem;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .game-name {
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+    .game-desc {
       font-size: 0.9rem;
       color: #666666;
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      flex-grow: 1;
+    }
+    .game-play-btn {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #000000;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
     /* リンク集 (Links) */
@@ -191,7 +181,7 @@
       padding: 1.5rem;
       background: #fafafa;
       border: 1px solid #e5e5e5;
-      border-radius: 6px;
+      border-radius: 8px;
       text-decoration: none;
       color: #111111;
       transition: border-color 0.2s, background-color 0.2s;
@@ -230,14 +220,6 @@
         gap: 1.2rem;
         font-size: 0.9rem;
       }
-      .hero-title {
-        font-size: 2.5rem;
-      }
-      .game-control-bar {
-        flex-direction: column;
-        gap: 0.8rem;
-        align-items: flex-start;
-      }
     }
   </style>
 </head>
@@ -256,8 +238,6 @@
   </header>
 
   <main class="container">
-    <!-- トップ画面（画像中央部分の再現） -->
-
     <!-- 1. このサイトについて -->
     <section id="about">
       <h2 class="section-title">このサイトについて</h2>
@@ -267,23 +247,26 @@
       </div>
     </section>
 
-    <!-- 2. ゲーム -->
+    <!-- 2. ゲーム一覧 -->
     <section id="game">
       <h2 class="section-title">ゲーム</h2>
-      <p style="color: #666; margin-bottom: 1rem;">ブラウザ上でそのまま遊べるシンプルなサバイバルアクションです。</p>
+      <p style="color: #666;">遊ぶゲームを選んでください（クリックするとゲーム専用ページが開きます）。</p>
       
-      <div class="game-card">
-        <div class="game-header">
-          <h3>MINIMAL SURVIVOR</h3>
-          <span style="font-size: 0.85rem; color: #666;">Ver 1.0</span>
-        </div>
-        <div class="game-canvas-area">
-          <canvas id="gameCanvas" width="800" height="450"></canvas>
-        </div>
-        <div class="game-control-bar">
-          <div>操作: マウス移動または画面スワイプで自機を操作</div>
-          <button class="btn-black" id="restartBtn" style="padding: 0.5rem 1.2rem; font-size: 0.85rem;">スタート / やり直す</button>
-        </div>
+      <div class="games-grid">
+        <!-- ゲーム1：MINIMAL SURVIVOR -->
+        <a href="game1.html" class="game-card">
+          <div class="game-banner">
+            <span class="game-tag">ACTION</span>
+            <div class="game-icon">🚀</div>
+          </div>
+          <div class="game-content">
+            <h3 class="game-name">MINIMAL SURVIVOR</h3>
+            <p class="game-desc">矢印の自機を操り、迫り来る敵を撃破するサバイバルシューティング。</p>
+            <div class="game-play-btn">プレイする →</div>
+          </div>
+        </a>
+
+        <!-- ※今後ゲームを増やしたいときは、上の <a href="...">...</a> をコピーして下に並べるだけで増やせます -->
       </div>
     </section>
 
@@ -310,159 +293,5 @@
     <p>&copy; 2026 LiveAi. All Rights Reserved.</p>
   </footer>
 
-  <!-- ゲームプログラム -->
-  <script>
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    let animationId;
-    let isPlaying = false;
-    let score = 0;
-
-    const player = { x: 400, y: 225, radius: 10, speed: 5 };
-    let enemies = [];
-    let bullets = [];
-    let targetPos = { x: 400, y: 225 };
-    let lastSpawn = 0;
-    let lastShot = 0;
-
-    function initGame() {
-      player.x = 400; player.y = 225;
-      targetPos.x = 400; targetPos.y = 225;
-      enemies = [];
-      bullets = [];
-      score = 0;
-      isPlaying = true;
-      lastSpawn = Date.now();
-      lastShot = Date.now();
-    }
-
-    function gameLoop() {
-      if (!isPlaying) return;
-
-      const dx = targetPos.x - player.x;
-      const dy = targetPos.y - player.y;
-      player.x += dx * 0.1;
-      player.y += dy * 0.1;
-
-      if (Date.now() - lastShot > 250) {
-        if (enemies.length > 0) {
-          const target = enemies[0];
-          const angle = Math.atan2(target.y - player.y, target.x - player.x);
-          bullets.push({ x: player.x, y: player.y, vx: Math.cos(angle) * 9, vy: Math.sin(angle) * 9 });
-        }
-        lastShot = Date.now();
-      }
-
-      if (Date.now() - lastSpawn > 650) {
-        const side = Math.floor(Math.random() * 4);
-        let ex, ey;
-        if (side === 0) { ex = Math.random() * 800; ey = -20; }
-        else if (side === 1) { ex = 820; ey = Math.random() * 450; }
-        else if (side === 2) { ex = Math.random() * 800; ey = 470; }
-        else { ex = -20; ey = Math.random() * 450; }
-        enemies.push({ x: ex, y: ey, radius: 10, speed: 2.2 });
-        lastSpawn = Date.now();
-      }
-
-      for (let i = bullets.length - 1; i >= 0; i--) {
-        const b = bullets[i];
-        b.x += b.vx; b.y += b.vy;
-        if (b.x < 0 || b.x > 800 || b.y < 0 || b.y > 450) bullets.splice(i, 1);
-      }
-
-      for (let i = enemies.length - 1; i >= 0; i--) {
-        const e = enemies[i];
-        const angle = Math.atan2(player.y - e.y, player.x - e.x);
-        e.x += Math.cos(angle) * e.speed;
-        e.y += Math.sin(angle) * e.speed;
-
-        if (Math.hypot(player.x - e.x, player.y - e.y) < player.radius + e.radius) {
-          gameOver();
-          return;
-        }
-
-        for (let j = bullets.length - 1; j >= 0; j--) {
-          const b = bullets[j];
-          if (Math.hypot(e.x - b.x, e.y - b.y) < e.radius + 4) {
-            enemies.splice(i, 1);
-            bullets.splice(j, 1);
-            score += 10;
-            break;
-          }
-        }
-      }
-
-      // 描画処理
-      ctx.fillStyle = "#0f172a";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#38bdf8";
-      bullets.forEach(b => {
-        ctx.beginPath();
-        ctx.arc(b.x, b.y, 3.5, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      ctx.fillStyle = "#ffffff";
-      ctx.beginPath();
-      ctx.arc(player.x, player.y, player.radius, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#f43f5e";
-      enemies.forEach(e => {
-        ctx.beginPath();
-        ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "600 16px sans-serif";
-      ctx.fillText(`SCORE: ${score}`, 24, 32);
-
-      animationId = requestAnimationFrame(gameLoop);
-    }
-
-    function gameOver() {
-      isPlaying = false;
-      cancelAnimationFrame(animationId);
-      ctx.fillStyle = "rgba(15, 23, 42, 0.85)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#ffffff";
-      ctx.font = "bold 22px sans-serif";
-      ctx.textAlign = "center";
-      ctx.fillText("GAME OVER", 400, 215);
-      ctx.font = "15px sans-serif";
-      ctx.fillText(`SCORE: ${score}`, 400, 245);
-      ctx.textAlign = "start";
-    }
-
-    function updatePos(e) {
-      const rect = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-      targetPos.x = (clientX - rect.left) * scaleX;
-      targetPos.y = (clientY - rect.top) * scaleY;
-    }
-
-    canvas.addEventListener("mousemove", updatePos);
-    canvas.addEventListener("touchmove", (e) => { updatePos(e); e.preventDefault(); }, { passive: false });
-
-    document.getElementById("restartBtn").addEventListener("click", () => {
-      cancelAnimationFrame(animationId);
-      initGame();
-      gameLoop();
-    });
-
-    // 初期待機画面
-    ctx.fillStyle = "#0f172a";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#94a3b8";
-    ctx.font = "16px sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("「スタート」ボタンを押して開始", 400, 225);
-    ctx.textAlign = "start";
-  </script>
 </body>
 </html>
