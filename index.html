@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LiveAiのホームページ</title>
   <style>
-    /* 全体リセット & フォント設定 */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -15,13 +14,12 @@
       scroll-behavior: smooth;
     }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: #ffffff;
       color: #111111;
       line-height: 1.8;
     }
 
-    /* ヘッダー */
     header {
       width: 100%;
       background: #ffffff;
@@ -41,10 +39,8 @@
     .site-title {
       font-size: 1.3rem;
       font-weight: 800;
-      letter-spacing: -0.02em;
       color: #111111;
       text-decoration: none;
-      line-height: 1.2;
     }
     .nav-links {
       display: flex;
@@ -56,20 +52,14 @@
       text-decoration: none;
       font-size: 0.95rem;
       font-weight: 500;
-      transition: opacity 0.2s;
-    }
-    .nav-links a:hover {
-      opacity: 0.6;
     }
 
-    /* メインコンテナ */
     .container {
       max-width: 900px;
       margin: 0 auto;
       padding: 0 1.5rem;
     }
 
-    /* 各セクション */
     section {
       padding: 4.5rem 0;
       border-top: 1px solid #f2f2f2;
@@ -81,25 +71,12 @@
     .section-title {
       font-size: 1.7rem;
       font-weight: 800;
-      letter-spacing: -0.02em;
       margin-bottom: 1.5rem;
     }
 
-    /* このサイトについて (About) */
-    .about-text {
-      color: #444444;
-      font-size: 1.05rem;
-      max-width: 700px;
-    }
-    .about-text p {
-      margin-bottom: 1.2rem;
-    }
-
-    /* ゲーム一覧カード */
-    .games-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
+    /* ゲームカード */
+    .game-card-wrapper {
+      max-width: 480px;
       margin-top: 1.5rem;
     }
     .game-card {
@@ -115,32 +92,41 @@
     }
     .game-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.06);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.08);
       border-color: #111111;
       background: #ffffff;
     }
     .game-banner {
-      height: 150px;
-      background: #0f172a;
+      height: 160px;
+      background: #0b0d19;
       display: flex;
       justify-content: center;
       align-items: center;
       position: relative;
     }
-    .game-icon {
-      font-size: 3rem;
-    }
     .game-tag {
       position: absolute;
       top: 12px;
       left: 12px;
-      background: rgba(255, 255, 255, 0.2);
-      color: #ffffff;
+      background: rgba(56, 189, 248, 0.2);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.4);
       padding: 0.2rem 0.6rem;
       border-radius: 4px;
       font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
+      font-weight: 800;
+    }
+    /* ドット絵キャラクターアイコン */
+    .pixel-girl-icon {
+      width: 76px;
+      height: 76px;
+      image-rendering: pixelated;
+      shape-rendering: crispEdges;
+      filter: drop-shadow(0 6px 12px rgba(56, 189, 248, 0.4));
+      transition: transform 0.2s;
+    }
+    .game-card:hover .pixel-girl-icon {
+      transform: scale(1.1);
     }
     .game-content {
       padding: 1.5rem;
@@ -149,27 +135,27 @@
       flex-grow: 1;
     }
     .game-name {
-      font-size: 1.2rem;
-      font-weight: 800;
+      font-size: 1.25rem;
+      font-weight: 900;
       margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
     }
     .game-desc {
       font-size: 0.9rem;
       color: #666666;
       line-height: 1.6;
       margin-bottom: 1.5rem;
-      flex-grow: 1;
     }
     .game-play-btn {
-      font-size: 0.9rem;
-      font-weight: 700;
+      font-size: 0.95rem;
+      font-weight: 800;
       color: #000000;
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
     }
 
-    /* リンク集 (Links) */
+    /* リンク集 */
     .links-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -184,23 +170,8 @@
       border-radius: 8px;
       text-decoration: none;
       color: #111111;
-      transition: border-color 0.2s, background-color 0.2s;
-    }
-    .link-item:hover {
-      border-color: #000000;
-      background-color: #ffffff;
-    }
-    .link-name {
-      font-weight: 700;
-      font-size: 1.05rem;
-      margin-bottom: 0.3rem;
-    }
-    .link-desc {
-      font-size: 0.85rem;
-      color: #666666;
     }
 
-    /* フッター */
     footer {
       border-top: 1px solid #f2f2f2;
       padding: 3rem 0;
@@ -208,24 +179,10 @@
       font-size: 0.85rem;
       color: #888888;
     }
-
-    /* スマホ対応 */
-    @media (max-width: 768px) {
-      .header-inner {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: flex-start;
-      }
-      .nav-links {
-        gap: 1.2rem;
-        font-size: 0.9rem;
-      }
-    }
   </style>
 </head>
 <body>
 
-  <!-- ヘッダー -->
   <header>
     <div class="header-inner">
       <a href="#" class="site-title">LiveAiのホームページ</a>
@@ -238,57 +195,71 @@
   </header>
 
   <main class="container">
-    <!-- 1. このサイトについて -->
     <section id="about">
       <h2 class="section-title">このサイトについて</h2>
-      <div class="about-text">
-        <p>LiveAiの個人制作ポータルサイトです。</p>
-        <p>ブラウザですぐに遊べるミニゲームや、イラストをAIで作っています。</p>
-      </div>
+      <p>LiveAiの個人制作ポータルサイトです。</p>
+      <p>ブラウザですぐに遊べるアクションゲームを公開しています。</p>
     </section>
 
-    <!-- 2. ゲーム一覧 -->
     <section id="game">
       <h2 class="section-title">ゲーム</h2>
-      <p style="color: #666;">遊ぶゲームを選んでください（クリックするとゲーム専用ページが開きます）。</p>
+      <p style="color: #666;">遊ぶゲームを選んでください（クリックで専用ページが開きます）。</p>
       
-      <div class="games-grid">
-        <!-- ゲーム1：MINIMAL SURVIVOR -->
-        <a href="yaji.html" class="game-card">
+      <div class="game-card-wrapper">
+        <!-- STELLA DASH（ドットの女の子アクション） -->
+        <a href="game2.html" class="game-card">
           <div class="game-banner">
-            <span class="game-tag">ACTION</span>
-            <div class="game-icon">🚀</div>
+            <span class="game-tag">2D ACTION</span>
+            
+            <!-- ドット絵の女の子ピクセルアート（SVG） -->
+            <svg class="pixel-girl-icon" viewBox="0 0 16 16">
+              <!-- 水色ポニーテール -->
+              <rect x="5" y="2" width="6" height="3" fill="#38bdf8"/>
+              <rect x="4" y="3" width="8" height="5" fill="#38bdf8"/>
+              <rect x="2" y="3" width="3" height="5" fill="#38bdf8"/>
+              <rect x="1" y="5" width="2" height="4" fill="#38bdf8"/>
+              <!-- ピンクリボン -->
+              <rect x="3" y="3" width="2" height="2" fill="#f43f5e"/>
+              <!-- 肌/顔 -->
+              <rect x="6" y="5" width="6" height="5" fill="#ffedd5"/>
+              <rect x="5" y="6" width="1" height="3" fill="#ffedd5"/>
+              <!-- 前髪 -->
+              <rect x="6" y="4" width="5" height="2" fill="#38bdf8"/>
+              <!-- つぶらな瞳 -->
+              <rect x="10" y="7" width="1" height="2" fill="#0f172a"/>
+              <!-- ほっぺ -->
+              <rect x="8" y="8" width="1" height="1" fill="#fb7185"/>
+              <!-- パーカー服 -->
+              <rect x="5" y="10" width="7" height="4" fill="#ffffff"/>
+              <rect x="4" y="11" width="1" height="3" fill="#ffffff"/>
+              <!-- スカート -->
+              <rect x="5" y="14" width="7" height="2" fill="#3b82f6"/>
+            </svg>
           </div>
           <div class="game-content">
-            <h3 class="game-name">MINIMAL SURVIVOR</h3>
-            <p class="game-desc">矢印の自機を操り、迫り来る敵を撃破するサバイバルシューティング。</p>
+            <h3 class="game-name">STELLA DASH</h3>
+            <p class="game-desc">ドット風の女の子を操り、ジャンプ・壁キック・急降下を駆使してステージを踏破するアクションゲーム！</p>
             <div class="game-play-btn">プレイする →</div>
           </div>
         </a>
-
-        <!-- ※今後ゲームを増やしたいときは、上の <a href="...">...</a> をコピーして下に並べるだけで増やせます -->
       </div>
     </section>
 
-    <!-- 3. リンク -->
     <section id="links">
       <h2 class="section-title">リンク</h2>
-      <p style="color: #666;">外部アカウントや関連ページの一覧です。</p>
-
       <div class="links-grid">
         <a href="https://twitter.com" target="_blank" rel="noopener" class="link-item">
-          <div class="link-name">X (旧Twitter)</div>
-          <div class="link-desc">Aiイラスト等の投稿</div>
+          <div style="font-weight: 700;">X (旧Twitter)</div>
+          <div style="font-size: 0.85rem; color: #666;">イラスト・ゲームの投稿</div>
         </a>
         <a href="https://lit.link/liveai" target="_blank" rel="noopener" class="link-item">
-          <div class="link-name">リンク集</div>
-          <div class="link-desc">各種リンク</div>
+          <div style="font-weight: 700;">リンク集</div>
+          <div style="font-size: 0.85rem; color: #666;">各種SNSへのリンク</div>
         </a>
       </div>
     </section>
   </main>
 
-  <!-- フッター -->
   <footer>
     <p>&copy; 2026 LiveAi. All Rights Reserved.</p>
   </footer>
